@@ -7,7 +7,9 @@
     {% for a in articles %}
         <h3>{{ a.title }} </i></h3>
         <div>{{ a.text }}</div>
-        <i>{{ a.author }}</i>
+        <i>Автор - {{ a.author }}</i>
+        <br>
+        <b>Прочитано: {{ a.readers.count }}</b>
         <hr>
     {% endfor %}
     <hr><hr>
@@ -15,6 +17,13 @@
     <h3>Статьи автора {{ wind }}</h3>
     <ol>
     {% for article in wind.articles.all %}
+        <li>{{ article.title }}</li>
+    {% endfor %}
+    </ol>
+    <hr>
+    <h3>Прочитано пользователем {{ wind }}</h3>
+    <ol>
+    {% for article in wind.user.articles.all %}
         <li>{{ article.title }}</li>
     {% endfor %}
     </ol>
