@@ -2,11 +2,22 @@
 
 {% block content %}
 
-    <h2>Articles:</h2>
-    <ul>
+    <h2>Статьи:</h2>
+    <hr>
     {% for a in articles %}
-        <li>{{ a.title }}</li>
+        <h3>{{ a.title }} </i></h3>
+        <div>{{ a.text }}</div>
+        <i>{{ a.author }}</i>
+        <hr>
     {% endfor %}
-    </ul>
+    <hr><hr>
+
+    <h3>Статьи автора {{ wind }}</h3>
+    <ol>
+    {% for article in wind.articles.all %}
+        <li>{{ article.title }}</li>
+    {% endfor %}
+    </ol>
+  
 
 {% endblock %}
