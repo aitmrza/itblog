@@ -4,10 +4,11 @@ from .models import Article, Author
 
 def homepage(request):
     articles = Article.objects.all()
-    wind = Author.objects.get(id=1)
 
-    return render(request, "article/homepage.html", 
-        {   
-            "articles": articles,
-            "wind": wind
-        })
+    return render(request, "article/homepage.html",
+        {"articles": articles})
+
+
+def authors(request):
+    authors = Author.objects.all()
+    return render(request, "article/authors.html", {"authors": authors})
