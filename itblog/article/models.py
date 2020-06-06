@@ -5,6 +5,7 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     likes = models.IntegerField(default=0)
+    comments = models.TextField(null=True, blank=True)
     active = models.BooleanField(default=True)
     author = models.ForeignKey(
         to='Author', on_delete=models.CASCADE,

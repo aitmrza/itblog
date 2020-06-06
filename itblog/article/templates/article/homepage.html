@@ -10,6 +10,8 @@
         <i>Автор - {{ a.author }}</i>
         <br>
         <b>Прочитано: {{ a.readers.count }}</b>
+        <div>Комментарии:</div>
+        <h4>{{ a.comments }}</h4>
         <hr>
     {% endfor %}
     <hr><hr>
