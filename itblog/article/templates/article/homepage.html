@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Статьи:</h2>
-    <hr>
+
     {% for a in articles %}
-        <h3>{{ a.title }} </i></h3>
+        <h4>{{ a.title }}</h4>
         <div>{{ a.text }}</div>
         <i>Автор - {{ a.author }}</i>
         <br>
-        <b>Прочитано: {{ a.readers.count }}</b>
+        <h6><b>Прочитано: {{ a.readers.count }}</b></h6>
         <hr>
     {% endfor %}  
 

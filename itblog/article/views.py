@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Article, Author
+from .models import Article, Author, User
 
 
 def homepage(request):
@@ -12,3 +12,7 @@ def homepage(request):
 def authors(request):
     authors = Author.objects.all()
     return render(request, "article/authors.html", {"authors": authors})
+
+def users(request):
+    users = User.objects.all()
+    return render(request, "article/users.html", {'users': users})
