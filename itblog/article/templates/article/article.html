@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>{{ article.title }}</h2>
+    <div>{{ article.text }}</div>
+    <i>Автор: {{ article.author }}</i>
+    <h6>Понравилось: {{ article.likes }}</h6>
+    <h4>Прочитали: {{ article.likes.count }}</h4>
+    <ul>
+    {% for reader in article.readers.all %}
+        <li>{{ reader }}</li>
+    {% endfor %}
+    </ul>
+    <hr>
+    <form method="POST">{% csrf_token %}
+        <button class="btn btn-lg btn-danger">Удалить статью</button>
+    </form>
+{% endblock %}

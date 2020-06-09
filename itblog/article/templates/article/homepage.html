@@ -3,11 +3,12 @@
 {% block content %}
 
     {% for a in articles %}
-        <h4>{{ a.title }}</h4>
-        <div>{{ a.text }}</div>
+        <h5><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
         <i>Автор - {{ a.author }}</i>
         <br>
-        <h6><b>Прочитано: {{ a.readers.count }}</b></h6>
+        <b>Прочитано: {{ a.readers.count }}</b>
+        <br>
+        <b>Понравилось: {{ a.likes }}</b>
         <hr>
     {% endfor %}  
 
