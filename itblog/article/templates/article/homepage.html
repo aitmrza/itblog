@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for a in articles %}
-        <h5><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
+        <h5><a href="{% url 'article' a.id %}" class="alert-light">{{ a.title }}</a></h5>
         <i>Автор - {{ a.author }}</i>
         <br>
         <b>Прочитано: {{ a.readers.count }}</b>

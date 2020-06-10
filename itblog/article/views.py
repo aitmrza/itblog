@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Article, Author, User
-from .forms import ArticleForm
+from .forms import ArticleForm, AuthorForm
 
 def homepage(request):
     articles = Article.objects.filter(active=True)
@@ -38,6 +38,20 @@ def add_article(request):
 def authors(request):
     authors = Author.objects.all()
     return render(request, "article/authors.html", {"authors": authors})
+
+def author(request, id):
+    author = Author.objects.get(id=id)
+    return render(request, 'article/author.html', {"author": author})
+
+def add_author(request):
+    if request.method == 'POST':
+        author = Author()
+        author.name = request.POST.get('name')
+        author.save()
+        return render(request, 'success.html')
+    
+    form = AuthorForm()
+    return render(request, 'article/add_author.html', {'form': form})
 
 def users(request):
     users = {}

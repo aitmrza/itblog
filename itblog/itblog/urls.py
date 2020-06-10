@@ -21,6 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage, name='homepage'),
     path('authors/', authors, name='authors'),
+    path('author/<int:id>/', author, name='author'),
+    path('author/add/', add_author, name='add-author'),
     path('users/', users, name='users'),
     path('article/<int:id>/', article, name='article'),
     path('article/add/', add_article, name='add-article'),
