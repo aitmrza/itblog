@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    {% for user in users %}
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">{{ user }}</li>
-        </ul>
-    {% endfor %}
-
+    <h3>Список пользователей:</h3>
+    <hr>
+    <table class="table table-dark table-hover table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Логин</th>
+                <th>ФИО</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user }}</td>
+                    <td>{{ user.get_full_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
