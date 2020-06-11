@@ -22,14 +22,10 @@ def article(request, id):
 
 def add_article(request):
     if request.method == 'POST':
-        article = Article()
-        article.title = request.POST.get('title')
-        article.text = request.POST.get("text")
-        author_id = request.POST.get("author")
-        author = Author.objects.get(id=author_id)
-        article.author = author
-        article.save()
-        return render(request, "success.html")
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "success.html")
 
     form = ArticleForm()
     return render(request, 'article/add_article.html', {'form': form})
@@ -45,10 +41,10 @@ def author(request, id):
 
 def add_author(request):
     if request.method == 'POST':
-        author = Author()
-        author.name = request.POST.get('name')
-        author.save()
-        return render(request, 'success.html')
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "success.html")
     
     form = AuthorForm()
     return render(request, 'article/add_author.html', {'form': form})

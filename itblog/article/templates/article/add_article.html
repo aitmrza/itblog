@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
 
     <h4>Добавление статьи</h4>
     <form method="POST">{% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-outline-dark">Отправить</button>
+        {% bootstrap_form form %}
+        <button class="btn btn-outline-dark">Добавить</button>
     </form>
 
 {% endblock%}

@@ -4,12 +4,12 @@
 
     {% for a in articles %}
         <h5><a href="{% url 'article' a.id %}" class="alert-light">{{ a.title }}</a></h5>
-        <i>Автор - {{ a.author }}</i>
+        <i>Автор - <a href="{% url 'author' a.author.id %}">{{ a.author }}</a></i>
         <br>
         <b>Прочитано: {{ a.readers.count }}</b>
         <br>
         <b>Понравилось: {{ a.likes }}</b>
         <hr>
-    {% endfor %}  
+    {% endfor %}
 
 {% endblock %}
