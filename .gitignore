@@ -1,4 +1,4 @@
 venv
-itblog/db.sqlite3
-itblog/article/__pycache__
-itblog/itblog/__pycache__
+db.sqlite3
+__pycache__
+media

@@ -30,6 +30,16 @@ def add_article(request):
     form = ArticleForm()
     return render(request, 'article/add_article.html', {'form': form})
 
+def edit_article(request, id):
+    article = Article.objects.get(id=id)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            return render(request, 'success.html')
+            
+    form = ArticleForm(instance=article)
+    return render(request, 'article/add_article.html', {'form': form})
 
 def authors(request):
     authors = Author.objects.all()
