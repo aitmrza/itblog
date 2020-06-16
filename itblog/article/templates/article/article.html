@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
 
@@ -12,16 +13,27 @@
         <li>{{ reader }}</li>
     {% endfor %}
     </ul>
-    <h5>Комментарии:</h5>
-    {% for comment in article.comments.all %}
-        <dl>{{ comment.user }} - 
-        <a href="{% url 'edit-comment' comment.id %}">{{ comment.text }}</a></dl>
-    {% endfor %}
-    <hr>
-    <a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">Редактировать</a>
+    <a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">Редактировать статью</a>
     <br>
     <br>
     <form method="POST">{% csrf_token %}
-        <button class="btn btn-lg btn-danger">Удалить статью</button>
+        <button name='delete_btn' class="btn btn-lg btn-danger">Удалить статью</button>
     </form>
-{% endblock %}
+    <hr>
+    <form method="POST">{% csrf_token %}
+        {% bootstrap_form form %}
+        <button name='comment_btn' class='btn btn-primary'>Добавить</button>
+    </form>
+    <h4>Комментарии:</h4>
+    {% for comment in article.comments.all %}
+    <dl>
+        <h6>{{ comment.text }}</h6>
+        <i>{{ comment.user.username }}</i>
+        <p>
+            <a href="{% url 'edit-comment' comment.id %}">Редактировать</a> |
+            <a href="{% url 'delete-comment' comment.id %}">Удалить</a>
+        </p>
+    </dl>
+    <hr>
+    {% endfor %}
+    {% endblock %}

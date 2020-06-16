@@ -9,15 +9,28 @@ def homepage(request):
         {"articles": articles})
 
 def article(request, id):
-    if request.method == "POST":
-        article = Article.objects.get(id=id)
-        article.active = False
-        article.save()
-        return redirect(homepage)
-
     article = Article.objects.get(id=id)
-    return render(request, 'article/article.html',
-    {"article": article})
+    if request.method == "POST":
+        if "delete_btn" in request.POST:
+            article.active = False
+            article.save()
+            return redirect(homepage)
+
+        elif "comment_btn" in request.POST:
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                user = request.user
+                form.save()
+                comment = Comment(
+                    user=user,
+                    article=article,
+                    text=form.cleaned_data['text']
+                )    
+                comment.save()
+    context = {}
+    context["article"] = article
+    context["form"] = CommentForm()
+    return render(request, "article/article.html", context)
 
 def add_article(request):
     if request.method == 'POST':
@@ -62,15 +75,7 @@ def users(request):
     users = {}
     users['users'] = User.objects.all()
     return render(request, "article/users.html", users)
-
-def add_comment(request):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'success.html')
-    form = CommentForm()
-    return render(request, 'article/add_comment.html', {'form': form})
+        
 
 def edit_comment(request, id):
     comment = Comment.objects.get(id=id)
@@ -80,4 +85,8 @@ def edit_comment(request, id):
             form.save()
             return render(request, 'success.html')
     form = CommentForm(instance=comment)
-    return render(request, 'article/add_comment.html', {'form': form})
+    return render(request, 'article/comment_form.html', {'form': form})
+
+def delete_comment(request, id):
+    Comment.objects.get(id=id).delete()
+    return render(request, 'success.html')
