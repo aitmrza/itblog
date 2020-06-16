@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <ul class="list-group list-group-flush">
         <li class="list-group-item">Псевдоним автора - {{ author.name }}</li>
         <li class="list-group-item">Кол-во публикаций - {{ author.articles.count }}</li>
         <img src="{{ author.photo.url }}" width="50%">
     </ul>
+    
 {% endblock %}

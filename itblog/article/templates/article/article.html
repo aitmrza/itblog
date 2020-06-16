@@ -6,12 +6,17 @@
     <div>{{ article.text }}</div>
     <i>Автор: {{ article.author }}</i>
     <h6>Понравилось: {{ article.likes }}</h6>
-    <h4>Прочитали: {{ article.likes.count }}</h4>
+    <h5>Прочитали: {{ article.readers.count }}</h5>
     <ul>
     {% for reader in article.readers.all %}
         <li>{{ reader }}</li>
     {% endfor %}
     </ul>
+    <h5>Комментарии:</h5>
+    {% for comment in article.comments.all %}
+        <dl>{{ comment.user }} - 
+        <a href="{% url 'edit-comment' comment.id %}">{{ comment.text }}</a></dl>
+    {% endfor %}
     <hr>
     <a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">Редактировать</a>
     <br>

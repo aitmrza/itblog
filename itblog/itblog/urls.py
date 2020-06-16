@@ -29,5 +29,7 @@ urlpatterns = [
     path('article/<int:id>/', article, name='article'),
     path('article/edit/<int:id>/', edit_article, name='edit-article'),
     path('article/add/', add_article, name='add-article'),
+    path('article/add_comment/', add_comment, name='add-comment'),
+    path('article/edit_comment/<int:id>/', edit_comment, name='edit-comment'),
 ]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

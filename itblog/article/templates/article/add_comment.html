@@ -3,10 +3,10 @@
 
 {% block content %}
 
-    <h4>Добавление автора</h4>
+    <h4>Добавление комментария</h4>
     <form method="post">{% csrf_token %}
         {% bootstrap_form form %}
-        <button class="btn btn-outline-dark">Добавить</button>
+        <button class="btn btn-outline-dark">Отправить</button>
     </form>
-    
+
 {% endblock %}

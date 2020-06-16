@@ -11,11 +11,7 @@ class Article(models.Model):
         related_name="articles", null=True, blank=True
     )
 
-    readers = models.ManyToManyField(
-        to=User,
-        related_name="articles",
-        blank=True
-    )
+    readers = models.ManyToManyField(to=User, related_name="articles", blank=True)
 
     def __str__(self):
         return self.title

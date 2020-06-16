@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Article, Author, User
-from .forms import ArticleForm, AuthorForm
+from .models import Article, Author, User, Comment
+from .forms import ArticleForm, AuthorForm, CommentForm
 
 def homepage(request):
     articles = Article.objects.filter(active=True)
@@ -14,7 +14,6 @@ def article(request, id):
         article.active = False
         article.save()
         return redirect(homepage)
-
 
     article = Article.objects.get(id=id)
     return render(request, 'article/article.html',
@@ -63,3 +62,22 @@ def users(request):
     users = {}
     users['users'] = User.objects.all()
     return render(request, "article/users.html", users)
+
+def add_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, 'success.html')
+    form = CommentForm()
+    return render(request, 'article/add_comment.html', {'form': form})
+
+def edit_comment(request, id):
+    comment = Comment.objects.get(id=id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return render(request, 'success.html')
+    form = CommentForm(instance=comment)
+    return render(request, 'article/add_comment.html', {'form': form})
