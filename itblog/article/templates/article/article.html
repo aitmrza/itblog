@@ -7,7 +7,10 @@
     <div>{{ article.text }}</div>
     <i>Автор: {{ article.author }}</i>
     <h6>Понравилось: {{ article.likes }}</h6>
-    <h5>Прочитали: {{ article.readers.count }}</h5>
+    <h6>Прочитали: {{ article.readers.count }}</h6>
+    <h6>Просмотров: {{ article.views }}</h6>
+    <h6>Дата публикации: {{ article.publications_date }}</h6>
+    <h6>Последнее изменение: {{ article.update_date }}</h6>
     <ul>
     {% for reader in article.readers.all %}
         <li>{{ reader }}</li>

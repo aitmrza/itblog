@@ -10,6 +10,8 @@ def homepage(request):
 
 def article(request, id):
     article = Article.objects.get(id=id)
+    article.views += 1
+    article.save()
     if request.method == "POST":
         if "delete_btn" in request.POST:
             article.active = False
