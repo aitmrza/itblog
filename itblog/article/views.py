@@ -3,10 +3,16 @@ from .models import Article, Author, User, Comment
 from .forms import ArticleForm, AuthorForm, CommentForm
 
 def homepage(request):
-    articles = Article.objects.filter(active=True)
+    if request.method == 'POST':
+        key = request.POST.get('key_word')
+        articles = Article.objects.filter(active=True).filter(
+            title__contains=key) | Article.objects.filter(active=True).filter(
+            text__contains=key) | Article.objects.filter(active=True).filter(
+            tag__name__contains=key)
+    else:
+        articles = Article.objects.filter(active=True).order_by('-likes')
 
-    return render(request, "article/homepage.html",
-        {"articles": articles})
+    return render(request, "article/homepage.html", {"articles": articles})
 
 def article(request, id):
     article = Article.objects.get(id=id)
