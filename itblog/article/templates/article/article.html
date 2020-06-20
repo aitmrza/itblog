@@ -4,17 +4,20 @@
 {% block content %}
 
     <h2>{{ article.title }}</h2>
+    {% if article.picture %}
+        <img src='{{ article.picture.url }}' width="80%">
+    {% endif %}
     <div>{{ article.text }}</div>
     <i>Автор: {{ article.author }}</i>
     <h6>Понравилось: {{ article.likes }}</h6>
-    <h6>Прочитали: {{ article.readers.count }}</h6>
     <h6>Просмотров: {{ article.views }}</h6>
     <h6>Дата публикации: {{ article.publications_date }}</h6>
     <h6>Последнее изменение: {{ article.update_date }}</h6>
+    <h6>Читателей: {{ article.readers.count }}</h6>
     <ul>
-    {% for reader in article.readers.all %}
-        <li>{{ reader }}</li>
-    {% endfor %}
+        {% for reader in article.readers.all %}
+            <li>{{ reader }}</li>
+        {% endfor %}
     </ul>
     <a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">Редактировать статью</a>
     <br>
@@ -28,6 +31,9 @@
         <button name='comment_btn' class='btn btn-primary'>Добавить</button>
     </form>
     <h4>Комментарии:</h4>
+    {% if not article.comments.all %}
+        <h5>Нет комментариев.</h5>
+    {% endif %}
     {% for comment in article.comments.all %}
     <dl>
         <h6>{{ comment.text }}</h6>

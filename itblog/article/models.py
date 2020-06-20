@@ -25,6 +25,10 @@ class Article(models.Model):
     def __str__(self):
         return self.title
     
+    class Meta:
+        verbose_name = 'статью'
+        verbose_name_plural = 'статьи'
+
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -37,6 +41,10 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'автор'
+        verbose_name_plural = 'авторы'
+
 
 class Comment(models.Model):
     article = models.ForeignKey(to=Article, on_delete=models.CASCADE, related_name="comments")
@@ -45,10 +53,17 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user.username + " - " + self.text
+
+    class Meta:
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'комментарии'
     
 class Tag(models.Model):
     name = models.CharField(max_length=55)
 
     def __str__(self):
         return self.name
-
+    
+    class Meta:
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'

@@ -11,6 +11,9 @@ def homepage(request):
 def article(request, id):
     article = Article.objects.get(id=id)
     article.views += 1
+    user = request.user
+    if not user.is_anonymous:
+        article.readers.add(user)
     article.save()
     if request.method == "POST":
         if "delete_btn" in request.POST:
@@ -36,7 +39,7 @@ def article(request, id):
 
 def add_article(request):
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return render(request, "success.html")
@@ -47,7 +50,7 @@ def add_article(request):
 def edit_article(request, id):
     article = Article.objects.get(id=id)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
             return render(request, 'success.html')
