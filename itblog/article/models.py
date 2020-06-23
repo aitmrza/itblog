@@ -13,7 +13,6 @@ class Article(models.Model):
     )
 
     readers = models.ManyToManyField(to=User, related_name="articles", blank=True)
-
     publications_date = models.DateTimeField(auto_now_add=True)
     update_date = models.DateTimeField(auto_now=True)
     picture = models.ImageField(null=True, blank=True, upload_to='articles/' + datetime.today().strftime('%Y%m%d'))

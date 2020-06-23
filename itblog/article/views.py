@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
 from .models import Article, Author, User, Comment
 from .forms import ArticleForm, AuthorForm, CommentForm
+from django.db.models import Q
 
 def homepage(request):
     if request.method == 'POST':
         key = request.POST.get('key_word')
-        articles = Article.objects.filter(active=True).filter(
-            title__contains=key) | Article.objects.filter(active=True).filter(
-            text__contains=key) | Article.objects.filter(active=True).filter(
-            tag__name__contains=key)
+        articles = Article.objects.filter(
+            Q(active=True),
+            Q(title__contains=key) | Q(text__contains=key) | 
+            Q(tag__name__contains=key) | Q(comments__text__contains=key)
+            )
     else:
         articles = Article.objects.filter(active=True).order_by('-likes')
 
