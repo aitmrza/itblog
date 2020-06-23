@@ -9,10 +9,22 @@ def homepage(request):
         articles = Article.objects.filter(
             Q(active=True),
             Q(title__contains=key) | Q(text__contains=key) | 
-            Q(tag__name__contains=key) | Q(comments__text__contains=key)
+            Q(tag__name__contains=key) | Q(comments__text__contains=key) |
+            Q(picture__contains=key) | Q(readers__username__contains=key)
             )
+        articles = articles.distinct()
     else:
-        articles = Article.objects.filter(active=True).order_by('-likes')
+        if 'key_word' in request.GET:
+            key = request.GET.get('key_word')
+            articles = Article.objects.filter(
+            Q(active=True),
+            Q(title__contains=key) | Q(text__contains=key) | 
+            Q(tag__name__contains=key) | Q(comments__text__contains=key) |
+            Q(picture__contains=key) | Q(readers__username__contains=key)
+            )
+            articles = articles.distinct()
+        else:
+            articles = Article.objects.filter(active=True)
 
     return render(request, "article/homepage.html", {"articles": articles})
 
@@ -49,7 +61,27 @@ def add_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            # Запрашиваемый пользователь становится автором
+            if not Author.objects.filter(user=request.user):
+                article = Author(
+                    user=request.user,
+                    name=request.name.username
+                )
+                author.save()
+            else:
+                author = Author.objects.get(user=request.user)
+            article = Article()
+            article.author = author
+            article.title = form.cleaned_data['title']
+            article.text = form.cleaned_data['text']
+            article.picture = form.cleaned_data['picture']
+            article.save()
+            
+            # Настройка тегов
+            tags = form.cleaned_data['tags']
+            for tag in tags.split(','):
+                obj, created = Tag.objects.get_or_create(name=tag)
+                article.tag.add(obj)
             return render(request, "success.html")
 
     form = ArticleForm()
