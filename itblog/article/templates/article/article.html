@@ -6,14 +6,20 @@
     <h2>{{ article.title }}</h2>
     {% if article.picture %}
         <img src='{{ article.picture.url }}' width="80%">
+        <br>
     {% endif %}
-    <div>{{ article.text }}</div>
+    <big>{{ article.text }}</big>
+    {% if article.tag.all %}
+        {% for tag in article.tag.all %}
+            <div>#{{ tag }}</div>
+        {% endfor %}
+    {% endif %}
+    <br>
     <i>Автор: {{ article.author }}</i>
-    <h6>Понравилось: {{ article.likes }}</h6>
-    <h6>Просмотров: {{ article.views }}</h6>
-    <h6>Дата публикации: {{ article.publications_date }}</h6>
-    <h6>Последнее изменение: {{ article.update_date }}</h6>
-    <h6>Читателей: {{ article.readers.count }}</h6>
+    <p>Понравилось: {{ article.likes }}</p>
+    <small>{{ article.views }} просмотров•{{ article.publications_date }}</small>
+    <div><small>Отредактировано: {{ article.update_date }}</small></div>
+    <div>Читателей: {{ article.readers.count }}</div>
     <ul>
         {% for reader in article.readers.all %}
             <li>{{ reader }}</li>

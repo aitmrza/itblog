@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Article, Author, User, Comment
+from .models import Article, Author, User, Comment, Tag
 from .forms import ArticleForm, AuthorForm, CommentForm
 from django.db.models import Q
 
@@ -70,18 +70,22 @@ def add_article(request):
                 author.save()
             else:
                 author = Author.objects.get(user=request.user)
+
             article = Article()
             article.author = author
             article.title = form.cleaned_data['title']
             article.text = form.cleaned_data['text']
             article.picture = form.cleaned_data['picture']
             article.save()
-            
+
             # Настройка тегов
             tags = form.cleaned_data['tags']
             for tag in tags.split(','):
-                obj, created = Tag.objects.get_or_create(name=tag)
-                article.tag.add(obj)
+                if len(tag) > 0:
+                    obj, created = Tag.objects.get_or_create(name=tag)
+                    article.tag.add(obj)
+
+            article.save()
             return render(request, "success.html")
 
     form = ArticleForm()
@@ -92,7 +96,22 @@ def edit_article(request, id):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
-            form.save()
+            if not Author.objects.filter(user=request.user):
+                article = Author(
+                    user=request.user,
+                    name=request.name.username
+                )
+                author.save()
+            else:
+                author = Author.objects.get(user=request.user)
+
+            tags = form.cleaned_data['tags']
+            for tag in tags.split(','):
+                if len(tag) > 0:
+                    obj, created = Tag.objects.get_or_create(name=tag)
+                    article.tag.add(obj)
+
+            article.save()
             return render(request, 'success.html')
             
     form = ArticleForm(instance=article)
@@ -119,8 +138,7 @@ def add_author(request):
 def users(request):
     users = {}
     users['users'] = User.objects.all()
-    return render(request, "article/users.html", users)
-        
+    return render(request, "article/users.html", users)        
 
 def edit_comment(request, id):
     comment = Comment.objects.get(id=id)
