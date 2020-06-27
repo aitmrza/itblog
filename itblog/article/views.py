@@ -4,27 +4,17 @@ from .forms import ArticleForm, AuthorForm, CommentForm
 from django.db.models import Q
 
 def homepage(request):
-    if request.method == 'POST':
-        key = request.POST.get('key_word')
+    if 'key_word' in request.GET:
+        key = request.GET.get('key_word')
         articles = Article.objects.filter(
-            Q(active=True),
-            Q(title__contains=key) | Q(text__contains=key) | 
-            Q(tag__name__contains=key) | Q(comments__text__contains=key) |
-            Q(picture__contains=key) | Q(readers__username__contains=key)
-            )
+        Q(active=True),
+        Q(title__contains=key) | Q(text__contains=key) | 
+        Q(tag__name__contains=key) | Q(comments__text__contains=key) |
+        Q(picture__contains=key) | Q(readers__username__contains=key)
+        )
         articles = articles.distinct()
     else:
-        if 'key_word' in request.GET:
-            key = request.GET.get('key_word')
-            articles = Article.objects.filter(
-            Q(active=True),
-            Q(title__contains=key) | Q(text__contains=key) | 
-            Q(tag__name__contains=key) | Q(comments__text__contains=key) |
-            Q(picture__contains=key) | Q(readers__username__contains=key)
-            )
-            articles = articles.distinct()
-        else:
-            articles = Article.objects.filter(active=True)
+        articles = Article.objects.filter(active=True)
 
     return render(request, "article/homepage.html", {"articles": articles})
 
@@ -40,12 +30,10 @@ def article(request, id):
             article.active = False
             article.save()
             return redirect(homepage)
-
         elif "comment_btn" in request.POST:
             form = CommentForm(request.POST)
             if form.is_valid():
                 user = request.user
-                form.save()
                 comment = Comment(
                     user=user,
                     article=article,
@@ -87,23 +75,20 @@ def add_article(request):
 
             article.save()
             return render(request, "success.html")
-
-    form = ArticleForm()
-    return render(request, 'article/add_article.html', {'form': form})
+    context = {}
+    context['form'] = ArticleForm()
+    context['protected'] = 'Сайт защищён от SQL-инъекций'
+    return render(request, 'article/add_article.html', context)
 
 def edit_article(request, id):
     article = Article.objects.get(id=id)
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
-            if not Author.objects.filter(user=request.user):
-                article = Author(
-                    user=request.user,
-                    name=request.name.username
-                )
-                author.save()
-            else:
-                author = Author.objects.get(user=request.user)
+            article.title = form.cleaned_data['title']
+            article.text = form.cleaned_data['text']
+            article.picture = form.cleaned_data['picture']
+            article.save()
 
             tags = form.cleaned_data['tags']
             for tag in tags.split(','):
@@ -112,10 +97,16 @@ def edit_article(request, id):
                     article.tag.add(obj)
 
             article.save()
-            return render(request, 'success.html')
-            
-    form = ArticleForm(instance=article)
-    return render(request, 'article/add_article.html', {'form': form})
+            context = {}
+            context['article'] = article
+            context['form'] = CommentForm()
+            context['message'] = 'Статья изменена успешно'
+            return render(request, 'article/article.html', context)
+
+    context = {}
+    context['form'] = ArticleForm(instance=article)
+    context['protected'] = 'Сайт защищён от SQL-инъекций'
+    return render(request, 'article/add_article.html', context)
 
 def authors(request):
     authors = Author.objects.all()
@@ -147,8 +138,10 @@ def edit_comment(request, id):
         if form.is_valid():
             form.save()
             return render(request, 'success.html')
-    form = CommentForm(instance=comment)
-    return render(request, 'article/comment_form.html', {'form': form})
+    context = {}
+    context['form'] = CommentForm(instance=comment)
+    context['protected'] = 'Сайт защищён от SQL-инъекций'
+    return render(request, 'article/comment_form.html', context)
 
 def delete_comment(request, id):
     Comment.objects.get(id=id).delete()

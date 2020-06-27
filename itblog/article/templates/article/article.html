@@ -2,23 +2,22 @@
 {% load bootstrap4 %}
 
 {% block content %}
+{% include 'includes/success.html' %}
 
     <h2>{{ article.title }}</h2>
     {% if article.picture %}
         <img src='{{ article.picture.url }}' width="80%">
         <br>
     {% endif %}
-    <big>{{ article.text }}</big>
-    {% if article.tag.all %}
-        {% for tag in article.tag.all %}
-            <div>#{{ tag }}</div>
-        {% endfor %}
-    {% endif %}
+    <big>{{ article.text|linebreaks }}</big>
+    {% for tag in article.tag.all %}
+        <div>#{{ tag }}</div>
+    {% endfor %}
     <br>
     <i>Автор: {{ article.author }}</i>
     <p>Понравилось: {{ article.likes }}</p>
-    <small>{{ article.views }} просмотров•{{ article.publications_date }}</small>
-    <div><small>Отредактировано: {{ article.update_date }}</small></div>
+    <small>{{ article.views }} просмотров•{{ article.publications_date|date:'d.m.Y H:i' }}</small>
+    <div><small>Отредактировано: {{ article.update_date|date:'d.m.Y H:i' }}</small></div>
     <div>Читателей: {{ article.readers.count }}</div>
     <ul>
         {% for reader in article.readers.all %}
@@ -34,7 +33,7 @@
     <hr>
     <form method="POST">{% csrf_token %}
         {% bootstrap_form form %}
-        <button name='comment_btn' class='btn btn-primary'>Добавить</button>
+        <button name='comment_btn' class='btn btn-primary'>Отправить</button>
     </form>
     <h4>Комментарии:</h4>
     {% if not article.comments.all %}
