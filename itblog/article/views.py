@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
-from .models import Article, Author, User, Comment, Tag
-from .forms import ArticleForm, AuthorForm, CommentForm
 from django.db.models import Q
+from django.shortcuts import redirect, render
+
+from .forms import ArticleForm, AuthorForm, CommentForm
+from .models import Article, Author, Comment, Tag, User
+
 
 def homepage(request):
     if 'key_word' in request.GET:

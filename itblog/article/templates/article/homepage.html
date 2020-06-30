@@ -2,14 +2,14 @@
 
 {% block content %}
 
-    {% for a in articles %}
-        <h5 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
-        <a href="{% url 'author' a.author.id %}"><i>Автор - {{ a.author }}</i></a>
-        <br>
-        <b>Прочитано: {{ a.readers.count }}</b>
-        <br>
-        <b>Понравилось: {{ a.likes }}</b>
-        <hr>
-    {% endfor %}
+{% for a in articles %}
+<h5 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
+<a href="{% url 'author' a.author.id %}"><i>Автор - {{ a.author }}</i></a>
+<br>
+<b>Прочитано: {{ a.readers.count }}</b>
+<br>
+<b>Понравилось: {{ a.likes }}</b>
+<hr>
+{% endfor %}
 
 {% endblock %}

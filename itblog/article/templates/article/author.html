@@ -2,12 +2,12 @@
 
 {% block content %}
 
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Псевдоним автора - {{ author.name }}</li>
-        <li class="list-group-item">Кол-во публикаций - {{ author.articles.count }}</li>
-        {% if author.photo %}
-            <img src="{{ author.photo.url }}" width="50%">
-        {% endif %}
-    </ul>
-    
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">Псевдоним автора - {{ author.name }}</li>
+    <li class="list-group-item">Кол-во публикаций - {{ author.articles.count }}</li>
+    {% if author.photo %}
+        <img src="{{ author.photo.url }}" width="50%">
+    {% endif %}
+</ul>
+
 {% endblock %}

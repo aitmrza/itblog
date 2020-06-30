@@ -2,10 +2,10 @@
 
 {% block content %}
 
-    {% for author in authors %}
-        <ul class="list-group list-group-flush">
-            <li class="alert alert-light"><a href="{% url 'author' author.id %}" class="alert-link">{{ author.name }}</a></li>
-        </ul>
-    {% endfor %}
+{% for author in authors %}
+<ul class="list-group list-group-flush">
+    <li class="alert alert-light"><a href="{% url 'author' author.id %}" class="alert-link">{{ author.name }}</a></li>
+</ul>
+{% endfor %}
 
 {% endblock %}

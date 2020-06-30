@@ -1,43 +1,54 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IT Blog</title>
-    <link rel="icon" href="{% static 'blog_ico.png' %}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT Blog</title>
+  <link rel="icon" href="{% static 'blog_ico.png' %}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+  </script>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/">Статьи</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'authors' %}">Авторы</a>
-              </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'users' %}">Пользователи</a>
-              </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Добавить</a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="{% url 'add-article' %}">Статью</a>
-                  <a class="dropdown-item" href="{% url 'add-author' %}">Автора</a>
-                </div>
-            </li>
-          </ul>
-            <form class="form-inline" action="{% url 'homepage' %}">{% csrf_token %}
-              <input class="form-control mr-sm-2" type="text" name="key_word" placeholder="Search">
-              <button class='btn btn-primary'>Поиск</button>
-            </form>
-    </nav>
-    <br>
-    {% block content %}{% endblock %}
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Статьи</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'authors' %}">Авторы</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'users' %}">Пользователи</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+          aria-expanded="false">Добавить</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'add-article' %}">Статью</a>
+          <a class="dropdown-item" href="{% url 'add-author' %}">Автора</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline" action="{% url 'homepage' %}">{% csrf_token %}
+      <input class="form-control mr-sm-2" type="text" name="key_word" placeholder="Search">
+      <button class='btn btn-primary'>Поиск</button>
+    </form>
+  </nav>
+  <br>
+  {% block content %}{% endblock %}
 </body>
+
 </html>
