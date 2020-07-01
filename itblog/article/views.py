@@ -17,8 +17,9 @@ def homepage(request):
         articles = articles.distinct()
     else:
         articles = Article.objects.filter(active=True)
-
-    return render(request, "article/homepage.html", {"articles": articles})
+    context = {}
+    context['articles'] = articles
+    return render(request, "article/homepage.html", context)
 
 def article(request, id):
     article = Article.objects.get(id=id)
