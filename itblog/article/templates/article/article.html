@@ -11,7 +11,7 @@
 {% endif %}
 <big>{{ article.text|linebreaks }}</big>
 {% for tag in article.tag.all %}
-    <div>#{{ tag }}</div>
+    <a href="{% url 'articles' tag %}" class="btn btn-info"><div>#{{ tag }}</div></a>
 {% endfor %}
 <br>
 <i>Автор: {{ article.author }}</i>
