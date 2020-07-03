@@ -10,3 +10,7 @@ a:hover {
     color: darkblue;
     text-decoration: none;
 }
+
+#text {
+    color: darkgreen
+}

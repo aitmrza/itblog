@@ -9,7 +9,7 @@
     <img src='{{ article.picture.url }}' width="80%">
     <br>
 {% endif %}
-<big>{{ article.text|linebreaks }}</big>
+<big id="text">{{ article.text|linebreaks }}</big>
 {% for tag in article.tag.all %}
     <a href="{% url 'articles' tag %}" class="btn btn-info"><div>#{{ tag }}</div></a>
 {% endfor %}
