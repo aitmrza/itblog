@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', homepage, name='homepage'),
     path('authors/', authors, name='authors'),
-    path('author/<int:id>/', author, name='author'),
+    path('author/profile/<int:id>/', author_profile, name='author_profile'),
     path('author/add/', add_author, name='add-author'),
     path('users/', users, name='users'),
     path('article/<int:id>/', article, name='article'),
@@ -33,4 +33,4 @@ urlpatterns = [
     path('articles/<str:tag>/', articles, name='articles'),
     path('comment/<int:id>/edit/', edit_comment, name='edit-comment'),
     path('comment/<int:id>/delete/', delete_comment, name='delete-comment'),
-]   + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
