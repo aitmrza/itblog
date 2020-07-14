@@ -4,7 +4,7 @@
 
 {% for a in articles %}
 <h5 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
-<a href="{% url 'author_profile' a.author.id %}"><i>Автор - {{ a.author }}</i></a>
+<a href="{% url 'author-profile' a.author.id %}"><i>Автор - {{ a.author }}</i></a>
 <br>
 <b>Прочитано: {{ a.readers.count }}</b>
 <br>
