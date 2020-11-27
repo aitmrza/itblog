@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import redirect, render
 
@@ -18,16 +19,13 @@ def homepage(request):
         articles = articles.distinct()
     else:
         articles = Article.objects.filter(active=True)
-    context = {}
-    context['articles'] = articles
-    return render(request, "article/homepage.html", context)
+
+    return render(request, "article/homepage.html", {'articles': articles})
 
 
 def articles(request, tag):
     tag = Tag.objects.get(name=tag)
-    context = {}
-    context['articles'] = Article.objects.filter(tag=tag)
-    return render(request, 'article/articles.html', context)
+    return render(request, 'article/articles.html', {'articles': Article.objects.filter(tag=tag)})
 
 
 def article(request, id):
@@ -52,12 +50,12 @@ def article(request, id):
                     text=form.cleaned_data['text']
                 )
                 comment.save()
-    context = {}
-    context["article"] = article
-    context["form"] = CommentForm()
+
+    context = {"article": article, "form": CommentForm()}
     return render(request, "article/article.html", context)
 
 
+@login_required(login_url='homepage')
 def add_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
@@ -88,9 +86,8 @@ def add_article(request):
 
             article.save()
             return render(request, "success.html")
-    context = {}
-    context['form'] = ArticleForm()
-    context['protected'] = 'Сайт защищён от SQL-инъекций'
+
+    context = {'form': ArticleForm(), 'protected': 'Сайт защищён от SQL-инъекций'}
     return render(request, 'article/add_article.html', context)
 
 
@@ -111,15 +108,13 @@ def edit_article(request, id):
                     article.tag.add(obj)
 
             article.save()
-            context = {}
-            context['article'] = article
-            context['form'] = CommentForm()
-            context['message'] = 'Статья изменена успешно'
+            context = {'article': article,
+                       'form': CommentForm(),
+                       'message': 'Статья изменена успешно'}
             return render(request, 'article/article.html', context)
 
-    context = {}
-    context['form'] = ArticleForm(instance=article)
-    context['protected'] = 'Сайт защищён от SQL-инъекций'
+    context = {'form': ArticleForm(instance=article),
+               'protected': 'Сайт защищён от SQL-инъекций'}
     return render(request, 'article/add_article.html', context)
 
 
@@ -145,9 +140,7 @@ def add_author(request):
 
 
 def users(request):
-    users = {}
-    users['users'] = User.objects.all()
-    return render(request, "article/users.html", users)
+    return render(request, "article/users.html", {'users': User.objects.all()})
 
 
 def edit_comment(request, id):
@@ -157,9 +150,9 @@ def edit_comment(request, id):
         if form.is_valid():
             form.save()
             return render(request, 'success.html')
-    context = {}
-    context['form'] = CommentForm(instance=comment)
-    context['protected'] = 'Сайт защищён от SQL-инъекций'
+
+    context = {'form': CommentForm(instance=comment),
+               'protected': 'Сайт защищён от SQL-инъекций'}
     return render(request, 'article/comment_form.html', context)
 
 
