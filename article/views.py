@@ -150,7 +150,7 @@ def edit_comment(request, id):
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-            return render(request, 'success.html')
+            return redirect(homepage)
 
     context = {'form': CommentForm(instance=comment)}
     return render(request, 'article/comment_form.html', context)
