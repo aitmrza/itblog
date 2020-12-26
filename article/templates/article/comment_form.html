@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
-{% block content %}
-{% include 'includes/success.html' %}
+{% block container %}
 
 <h4>Комментарий</h4>
 <form method="POST">{% csrf_token %}

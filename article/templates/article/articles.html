@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block container %}
 
 {% for a in articles %}
 <h5 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>

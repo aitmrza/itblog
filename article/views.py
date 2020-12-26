@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import redirect, render
 
 from .forms import *
@@ -18,20 +19,21 @@ def homepage(request):
         )
         articles = articles.distinct()
     else:
-        articles = Article.objects.filter(active=True)
+        articles = Article.objects.order_by('-publications_date').filter(active=True)
 
     return render(request, "article/homepage.html", {'articles': articles})
 
 
-def articles(request, tag):
+def tag_articles(request, tag):
     tag = Tag.objects.get(name=tag)
-    return render(request, 'article/articles.html', {'articles': Article.objects.filter(tag=tag)})
+    context = {'articles': Article.objects.filter(tag=tag)}
+    return render(request, 'article/articles.html', context)
 
 
 def article(request, id):
     article = Article.objects.get(id=id)
-    article.views += 1
     user = request.user
+    article.views += 1
     if not user.is_anonymous:
         article.readers.add(user)
     article.save()
@@ -60,7 +62,6 @@ def add_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            # Запрашиваемый пользователь становится автором
             if not Author.objects.filter(user=request.user):
                 author = Author(
                     user=request.user,
@@ -91,8 +92,11 @@ def add_article(request):
     return render(request, 'article/add_article.html', context)
 
 
+@login_required
 def edit_article(request, id):
     article = Article.objects.get(id=id)
+    if article.author.user != request.user:
+        raise Http404
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
@@ -108,13 +112,10 @@ def edit_article(request, id):
                     article.tag.add(obj)
 
             article.save()
-            context = {'article': article,
-                       'form': CommentForm(),
-                       'message': 'Статья изменена успешно'}
+            context = {'article': article, 'form': CommentForm()}
             return render(request, 'article/article.html', context)
 
-    context = {'form': ArticleForm(instance=article),
-               'protected': 'Сайт защищён от SQL-инъекций'}
+    context = {'form': ArticleForm(instance=article)}
     return render(request, 'article/add_article.html', context)
 
 
@@ -151,11 +152,10 @@ def edit_comment(request, id):
             form.save()
             return render(request, 'success.html')
 
-    context = {'form': CommentForm(instance=comment),
-               'protected': 'Сайт защищён от SQL-инъекций'}
+    context = {'form': CommentForm(instance=comment)}
     return render(request, 'article/comment_form.html', context)
 
 
 def delete_comment(request, id):
     Comment.objects.get(id=id).delete()
-    return render(request, 'success.html')
+    return redirect(homepage)

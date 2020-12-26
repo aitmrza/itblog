@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 
-{% block content %}
-
-{% for a in articles %}
-<h5 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h5>
-<a href="{% url 'author-profile' a.author.id %}"><i>Автор - {{ a.author }}</i></a>
-<br>
-<b>Прочитано: {{ a.readers.count }}</b>
-<br>
-<b>Понравилось: {{ a.likes }}</b>
-<hr>
-{% endfor %}
+{% block container %}
+  <h2>Все потоки</h2>
+  {% for a in articles %}
+    <a href="{% url 'author-profile' a.author.id %}" title="Автор публикации"><i>{{ a.author }}</i></a>
+    <small class="text-muted">{{ a.publications_date }}</small>
+    <br>
+    <h4 id='article{{ a.id }}'><a href="{% url 'article' a.id %}">{{ a.title }}</a></h4>
+    <b>Прочитано: {{ a.readers.count }}</b><br>
+    <b>Понравилось: {{ a.likes }}</b>
+    {% empty %}
+    <h5>No publications.</h5>
+  {% endfor %}
 
 {% endblock %}

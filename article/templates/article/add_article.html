@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
-{% block content %}
-{% include 'includes/success.html' %}
+{% block container %}
 
-<h4>Статья</h4>
-<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <h4>Статья</h4>
+  <form method="POST" enctype="multipart/form-data">{% csrf_token %}
     {% bootstrap_form form %}
     <button class="btn btn-outline-dark">Опубликовать</button>
-</form>
+  </form>
 
-{% endblock%}
+{% endblock %}

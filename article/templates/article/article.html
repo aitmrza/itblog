@@ -1,53 +1,47 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
-{% block content %}
-{% include 'includes/success.html' %}
-
-<h2>{{ article.title }}</h2>
-{% if article.picture %}
+{% block container %}
+  <a href="{% url 'author-profile' article.author.id %}" title="Автор публикации"><i>{{ article.author }}</i></a>
+  <small class="text-muted">{{ article.publications_date }}</small>
+  <h2>{{ article.title }}</h2>
+  {% if article.picture %}
     <img src='{{ article.picture.url }}' width="80%">
     <br>
-{% endif %}
-<big id="text">{{ article.text|linebreaks }}</big>
-{% for tag in article.tag.all %}
-    <a href="{% url 'articles' tag %}" class="btn btn-info"><div>#{{ tag }}</div></a>
-{% endfor %}
-<br>
-<i>Автор: {{ article.author }}</i>
-<p>Понравилось: {{ article.likes }}</p>
-<small>{{ article.views }} просмотров•{{ article.publications_date|date:'d.m.Y H:i' }}</small>
-<div><small>Отредактировано: {{ article.update_date|date:'d.m.Y H:i' }}</small></div>
-<div>Читателей: {{ article.readers.count }}</div>
-<ul>
-    {% for reader in article.readers.all %}
-        <li>{{ reader }}</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'edit-article' article.id %}" class="btn btn-lg btn-warning">Редактировать статью</a>
-<br>
-<br>
-<form method="POST">{% csrf_token %}
-    <button name='delete_btn' class="btn btn-lg btn-danger">Удалить статью</button>
-</form>
-<hr>
-<form method="POST">{% csrf_token %}
+  {% endif %}
+  <p id="text">{{ article.text|linebreaks }}</p>
+  {% for tag in article.tag.all %}
+    <a href="{% url 'articles' tag %}">#{{ tag }}</a>
+  {% endfor %}
+  <br>
+  <p>&#129045; {{ article.likes }} &#129047;</p>
+  <small>{{ article.views }} просмотров</small>
+  <div><small>Отредактировано {{ article.update_date }}</small></div>
+  <div>Читателей: {{ article.readers.count }}</div>
+  <a href="{% url 'edit-article' article.id %}" class="btn btn-warning">Редактировать статью</a>
+  <br>
+  <br>
+  <form method="POST">{% csrf_token %}
+    <button name='delete_btn' class="btn btn-danger">Удалить статью</button>
+  </form>
+  <hr>
+  <form method="POST">{% csrf_token %}
     {% bootstrap_form form %}
     <button name='comment_btn' class='btn btn-primary'>Отправить</button>
-</form>
-<h4>Комментарии:</h4>
-{% if not article.comments.all %}
-    <h5>Нет комментариев.</h5>
-{% endif %}
-{% for comment in article.comments.all %}
-<dl>
-    <h6>{{ comment.text }}</h6>
-    <i>{{ comment.user.username }}</i>
-    <p>
+  </form>
+
+  <h4>Комментарии:</h4>
+  {% for comment in article.comments.all %}
+    <dl>
+      <h6>{{ comment.text }}</h6>
+      <i>{{ comment.user.username }}</i>
+      <p>
         <a href="{% url 'edit-comment' comment.id %}">Редактировать</a> |
         <a href="{% url 'delete-comment' comment.id %}">Удалить</a>
-    </p>
-</dl>
-<hr>
-{% endfor %}
+      </p>
+    </dl>
+    <hr>
+  {% empty %}
+    <h5>Нет комментариев.</h5>
+  {% endfor %}
 {% endblock %}
