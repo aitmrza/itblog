@@ -86,7 +86,7 @@ def add_article(request):
                     article.tag.add(obj)
 
             article.save()
-            return render(request, "success.html")
+            return redirect(homepage)
 
     context = {'form': ArticleForm(), 'protected': 'Сайт защищён от SQL-инъекций'}
     return render(request, 'article/add_article.html', context)
@@ -134,7 +134,7 @@ def add_author(request):
         form = AuthorForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, "success.html")
+            return redirect(homepage)
 
     form = AuthorForm()
     return render(request, 'article/add_author.html', {'form': form})
