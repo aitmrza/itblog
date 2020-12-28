@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from .forms import *
 from .models import Article, Author, Comment, Tag, User
@@ -25,13 +25,13 @@ def homepage(request):
 
 
 def tag_articles(request, tag):
-    tag = Tag.objects.get(name=tag)
+    tag = get_object_or_404(Tag, name=tag)
     context = {'articles': Article.objects.filter(tag=tag)}
     return render(request, 'article/articles.html', context)
 
 
 def article(request, id):
-    article = Article.objects.get(id=id)
+    article = get_object_or_404(Article, id=id)
     user = request.user
     article.views += 1
     if not user.is_anonymous:
@@ -69,7 +69,7 @@ def add_article(request):
                 )
                 author.save()
             else:
-                author = Author.objects.get(user=request.user)
+                author = get_object_or_404(Author, user=request.user)
 
             article = Article(
                 author=author,
@@ -94,7 +94,7 @@ def add_article(request):
 
 @login_required
 def edit_article(request, id):
-    article = Article.objects.get(id=id)
+    article = get_object_or_404(Author, id=id)
     if article.author.user != request.user:
         raise Http404
     if request.method == 'POST':
@@ -125,7 +125,7 @@ def authors(request):
 
 
 def author_profile(request, id):
-    author = Author.objects.get(id=id)
+    author = get_object_or_404(Author, id=id)
     return render(request, 'article/author_profile.html', {"author": author})
 
 
@@ -145,7 +145,7 @@ def users(request):
 
 
 def edit_comment(request, id):
-    comment = Comment.objects.get(id=id)
+    comment = get_object_or_404(Comment, id=id)
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=comment)
         if form.is_valid():
